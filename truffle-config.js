@@ -22,7 +22,7 @@ module.exports = {
     development: {
       host: "127.0.0.1",
       port: 7545,
-      network_id: "*",
+      network_id: 5777,
     },
     ropsten: {
       provider: () =>
@@ -60,13 +60,13 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-      version: "0.6.2",
+      version: "0.6.8",
       settings: {
         optimizer: {
           enabled: true,
           runs: 200,
         },
-        evmVersion: "byzantium",
+        evmVersion: "petersburg",
       },
     },
   },
