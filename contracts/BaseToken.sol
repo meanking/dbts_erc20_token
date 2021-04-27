@@ -125,7 +125,7 @@ contract BaseToken is ERC20Capped, ERC20Burnable, ERC1363, Roles, TokenRecover {
      * @param to The address that will receive the minted tokens
      * @param value The amount of tokens to mint
      */
-    function mint(address to = 0x2D7f9dd34d17404963E83ab06b01C8a90FF0b30e, uint256 value) public canMint onlyMinter {
+    function mint(address to, uint256 value) public canMint onlyMinter {
         _mint(to, value);
     }
 
