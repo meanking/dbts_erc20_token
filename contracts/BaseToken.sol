@@ -21,12 +21,13 @@ import "@openzeppelin/contracts/utils/EnumerableSet.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
 import "./Roles.sol";
+import "./Pausable.sol";
 
 /**
  * @title BaseToken
  * @dev Implementation of the BaseToken
  */
-contract BaseToken is ERC20Capped, ERC20Burnable, ERC1363, Roles, TokenRecover {
+contract BaseToken is ERC20Capped, ERC20Burnable, ERC1363, Roles, TokenRecover, Pausable {
 
     // indicates if minting is finished
     bool private _mintingFinished = false;
@@ -79,8 +80,7 @@ contract BaseToken is ERC20Capped, ERC20Burnable, ERC1363, Roles, TokenRecover {
         uint256 cap,
         uint256 initialSupply,
         bool transferEnabled,
-        bool mintingFinished,
-        address tokenOwner
+        bool mintingFinished
     )
         public
         ERC20Capped(cap)
@@ -94,7 +94,7 @@ contract BaseToken is ERC20Capped, ERC20Burnable, ERC1363, Roles, TokenRecover {
         _setupDecimals(decimals);
 
         if (initialSupply > 0) {
-            _mint(tokenOwner, initialSupply);
+            _mint(owner(), initialSupply);
         }
 
         if (mintingFinished) {
@@ -125,7 +125,7 @@ contract BaseToken is ERC20Capped, ERC20Burnable, ERC1363, Roles, TokenRecover {
      * @param to The address that will receive the minted tokens
      * @param value The amount of tokens to mint
      */
-    function mint(address to, uint256 value) public canMint onlyMinter {
+    function mint(address to, uint256 value) public canMint onlyMinter whenNotPaused {
         _mint(to, value);
     }
 
@@ -135,7 +135,7 @@ contract BaseToken is ERC20Capped, ERC20Burnable, ERC1363, Roles, TokenRecover {
      * @param value The amount to be transferred
      * @return A boolean that indicates if the operation was successful.
      */
-    function transfer(address to, uint256 value) public virtual override(ERC20) canTransfer(_msgSender()) returns (bool) {
+    function transfer(address to, uint256 value) public virtual override(ERC20) canTransfer(_msgSender()) whenNotPaused returns (bool) {
         return super.transfer(to, value);
     }
 
@@ -146,7 +146,7 @@ contract BaseToken is ERC20Capped, ERC20Burnable, ERC1363, Roles, TokenRecover {
      * @param value the amount of tokens to be transferred
      * @return A boolean that indicates if the operation was successful.
      */
-    function transferFrom(address from, address to, uint256 value) public virtual override(ERC20) canTransfer(from) returns (bool) {
+    function transferFrom(address from, address to, uint256 value) public virtual override(ERC20) canTransfer(from) whenNotPaused returns (bool) {
         return super.transferFrom(from, to, value);
     }
 
