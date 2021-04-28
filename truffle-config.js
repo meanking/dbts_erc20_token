@@ -9,16 +9,6 @@ const etherscanApiKey = process.env.ETHERSCAN_API_KEY;
 
 module.exports = {
   networks: {
-    // Useful for deploying to a public network.
-    // NB: It's important to wrap the provider as a function.
-    // ropsten: {
-    // provider: () => new HDWalletProvider(mnemonic, `https://ropsten.infura.io/v3/YOUR-PROJECT-ID`),
-    // network_id: 3,       // Ropsten's id
-    // gas: 5500000,        // Ropsten has a lower block limit than mainnet
-    // confirmations: 2,    // # of confs to wait between deployments. (default: 0)
-    // timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
-    // skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
-    // },
     development: {
       host: "127.0.0.1",
       port: 7545,
@@ -28,21 +18,31 @@ module.exports = {
       provider: () =>
         new HDWalletProvider(
           privatekeys,
-          `wss://ropsten.infura.io/ws/v3/${infuraKey}`
+          `https://ropsten.infura.io/v3/${infuraKey}`
         ),
       network_id: 3,
-      gas: 5500000,
-      gasPrice: 10000000000,
       networkCheckTimeout: 10000000,
       confirmations: 2,
       timeoutBlocks: 200,
       skipDryRun: true,
       from: fromAddress,
+      // optional config values:
+      // gas
+      // gasPrice
+      // from - default address to use for any transaction Truffle makes during migrations
+      // provider - web3 provider instance Truffle should use to talk to the Ethereum network.
+      //          - function that returns a web3 provider instance (see below.)
+      //          - if specified, host and port are ignored.
+      // skipDryRun: - true if you don't want to test run the migration locally before the actual migration (default is false)
+      // confirmations: - number of confirmations to wait between deployments (default: 0)
+      // timeoutBlocks: - if a transaction is not mined, keep waiting for this number of blocks (default is 50)
+      // deploymentPollingInterval: - duration between checks for completion of deployment transactions
+      // disableConfirmationListener: - true to disable web3's confirmation listener
     },
     main: {
       provider: () =>
         new HDWalletProvider(
-          mnemonic,
+          privatekeys,
           `https://mainnet.infura.io/v3/${infuraKey}`
         ),
       network_id: 1,

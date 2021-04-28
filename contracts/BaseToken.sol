@@ -169,6 +169,15 @@ contract BaseToken is ERC20Capped, ERC20Burnable, ERC1363, Roles, TokenRecover {
     }
 
     /**
+     * @dev Function to switch enable transfers.
+     */
+    function switchTransfer(bool flag) public onlyOwner {
+        _transferEnabled = flag;
+
+        emit TransferEnabled();
+    }
+
+    /**
      * @dev See {ERC20-_beforeTokenTransfer}.
      */
     function _beforeTokenTransfer(address from, address to, uint256 amount) internal virtual override(ERC20, ERC20Capped) {
