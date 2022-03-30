@@ -1,6 +1,6 @@
 ## dBTS_erc20_token
 
-Author(s): Henry Woo (Ethereum developer)
+Author(s): Mean King (Ethereum developer)
            Milos (DL) Preocanin (BitShares architect)
 
 ### ERC20 Characteristics and details:
